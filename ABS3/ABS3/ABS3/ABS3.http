@@ -1,0 +1,6 @@
+@ABS3_HostAddress = http://localhost:5195
+
+GET {{ABS3_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
