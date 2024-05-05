@@ -9,8 +9,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import swal from "sweetalert";
 
 const AdminUsers = () => {
+  const openAdd = () => {
+    swal({
+      title: "Add Admin",
+      text: "Enter email of user you want to add as admin",
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Email",
+        },
+      },
+    });
+  };
+
   useEffect(() => {
     document.title = "ABS3 BLOG | Users";
   }, []);
@@ -22,6 +37,14 @@ const AdminUsers = () => {
         </div>
 
         <div className="admin-right">
+          <Button
+            variant="contained"
+            style={{ marginLeft: "90%", backgroundColor: "#12372a" }}
+            onClick={openAdd}
+          >
+            Add Admin
+          </Button>
+          <br />
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 500 }} aria-label="simple table">
               <TableHead>

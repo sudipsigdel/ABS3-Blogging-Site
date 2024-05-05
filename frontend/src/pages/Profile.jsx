@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import swal from "sweetalert";
 
 const Profile = () => {
   useEffect(() => {
@@ -23,6 +24,22 @@ const Profile = () => {
   const handleClose = () => {
     setOpen(false);
     setOpenEdit(false);
+  };
+
+  const handleDelete = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, there is no way back!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your account has been deleted!", {
+          icon: "success",
+        });
+      }
+    });
   };
 
   const [password, setPassword] = useState("");
@@ -74,6 +91,14 @@ const Profile = () => {
           >
             <button onClick={handleOpen}>Change Password</button>
             <button onClick={handleOpenEdit}>Edit Profile</button>
+            <button
+              style={{
+                backgroundColor: "red",
+              }}
+              onClick={handleDelete}
+            >
+              Delete Account
+            </button>
           </div>
         </div>
       </div>
@@ -130,7 +155,7 @@ const Profile = () => {
             Edit profile
           </Typography>
           <br />
-    
+
           <TextField
             id="outlined-basic"
             label="Name"

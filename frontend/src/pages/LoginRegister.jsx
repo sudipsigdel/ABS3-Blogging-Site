@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 
 import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () => {
+  const navigate = useNavigate();
+
   const [isActive, setIsActive] = useState(false);
 
   const handleRegisterClick = () => {
@@ -23,38 +26,19 @@ const LoginRegister = () => {
         text: "Submit",
         closeModal: false,
       },
-    })
-      .then((email) => {
-        if (!email) throw null;
-
-        // TODO: Send email to user with code
-
-        return swal({
-          title: "Enter the code",
-          text: `Please enter the code sent to ${email}`,
-          content: "input",
-          button: {
-            text: "Verify",
-            closeModal: false,
-          },
+    }).then((email) => {
+      if (email) {
+        swal("Code has been sent to " + email, {
+          icon: "success",
+          timer: 2000,
         });
-      })
-      .then((code) => {
-        if (!code) throw null;
-
-        // TODO: Verify the code
-        
-
-        swal("Success", "Your new password is `changeasap`", "success");
-      })
-      .catch((err) => {
-        if (err) {
-          swal("Oh no!", "The request failed!", "error");
-        } else {
-          swal.stopLoading();
-          swal.close();
-        }
-      });
+        navigate("/reset-password");
+      } else {
+        swal("Email Required!", {
+          icon: "error",
+        });
+      }
+    });
   };
 
   useEffect(() => {

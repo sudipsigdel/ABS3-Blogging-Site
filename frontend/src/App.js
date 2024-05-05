@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import MyBlogs from "./pages/MyBlogs";
 import Notification from "./pages/Notification";
 import Post from "./pages/Post";
+import Reset from "./components/Reset";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminBlogs from "./pages/AdminBlogs";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/blogs" element={<MyBlogs />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/post" element={<Post />} />
+          <Route path="/reset-password" element={<Reset />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin-users" element={<AdminUsers />} />
           <Route path="/admin-blogs" element={<AdminBlogs />} />

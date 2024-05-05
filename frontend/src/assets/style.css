@@ -546,8 +546,21 @@
   width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-top: 10rem;
+}
+
+.admin-container .admin-right .top10 {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 3px solid #e9e6e6;
+  margin: 2rem 0;
+}
+
+.admin-container .admin-right .top10 > .left,
+.admin-container .admin-right .top10 > .right {
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
