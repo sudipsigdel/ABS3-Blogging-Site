@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
+
+import swal from "sweetalert";
 
 const LoginRegister = () => {
   const [isActive, setIsActive] = useState(false);
@@ -11,6 +13,53 @@ const LoginRegister = () => {
   const handleLoginClick = () => {
     setIsActive(false);
   };
+
+  const handleForget = () => {
+    swal({
+      title: "Forget Password",
+      text: "Please enter your email:",
+      content: "input",
+      button: {
+        text: "Submit",
+        closeModal: false,
+      },
+    })
+      .then((email) => {
+        if (!email) throw null;
+
+        // TODO: Send email to user with code
+
+        return swal({
+          title: "Enter the code",
+          text: `Please enter the code sent to ${email}`,
+          content: "input",
+          button: {
+            text: "Verify",
+            closeModal: false,
+          },
+        });
+      })
+      .then((code) => {
+        if (!code) throw null;
+
+        // TODO: Verify the code
+        
+
+        swal("Success", "Your new password is `changeasap`", "success");
+      })
+      .catch((err) => {
+        if (err) {
+          swal("Oh no!", "The request failed!", "error");
+        } else {
+          swal.stopLoading();
+          swal.close();
+        }
+      });
+  };
+
+  useEffect(() => {
+    document.title = "ABS3 BLOG | Welcome";
+  }, []);
 
   return (
     <div className="login-signup">
@@ -42,7 +91,9 @@ const LoginRegister = () => {
             <br />
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Password" />
-            <a href="/">Forget Your Password?</a>
+            <p onClick={handleForget} style={{ cursor: "pointer" }}>
+              Forget Your Password?
+            </p>
             <button>Sign In</button>
           </form>
         </div>
