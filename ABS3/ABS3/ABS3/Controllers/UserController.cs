@@ -1,4 +1,5 @@
-﻿using ABS3.Model;
+﻿using ABS3.DTO;
+using ABS3.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,11 +45,21 @@ namespace ABS3.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserDto user)
         {
-            _context.Users.Add(user);
+            User userObj = new User()
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Password = user.Password,
+                Phone = user.Phone,
+                role = user.role
+            };
+
+
+            _context.Users.Add(userObj);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetUserId), new { id = user.Id }, user);
+            return Ok();
         }
 
         [HttpPut]
