@@ -1,8 +1,11 @@
 ﻿using ABS3.DTO;
 using ABS3.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ABS3.Services;
 
 namespace ABS3.Controllers
 {
@@ -47,11 +50,15 @@ namespace ABS3.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserDto user)
         {
+
+            var passwordHash = Hash.HashPassword(user.Password);
+            
+
             User userObj = new User()
             {
                 Name = user.Name,
                 Email = user.Email,
-                Password = user.Password,
+                Password = passwordHash,
                 Phone = user.Phone,
                 role = user.role
             };
@@ -110,6 +117,30 @@ namespace ABS3.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+        [Authorize]
+        [HttpPut("UserProfilePassword")]
+        public async Task<ActionResult> ChangePassword(string currentPassword, string newPassword)
+        {
+            var currentPasswordHash = Hash.HashPassword(currentPassword);
+            var newPasswordHash = Hash.HashPassword(newPassword);
+            var userId = User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if(user.Password != currentPasswordHash)
+            {
+                return BadRequest("Password Does not match");
+            }
+            user.Password = newPasswordHash;
+            await _context.SaveChangesAsync();
+            return Ok("Password Changed Successfully");
+
+            
         }
 
 

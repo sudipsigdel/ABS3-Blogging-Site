@@ -12,7 +12,7 @@ namespace ABS3.Model
 
         public string Content { get; set; }
         public int Score { get; set; }
-        public string? Image { get; set; }
+        public string ImagePath { get; set; }
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]

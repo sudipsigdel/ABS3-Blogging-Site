@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ABS3.Controllers
 {
@@ -40,7 +41,16 @@ namespace ABS3.Controllers
 
 
                 };
+
+            var commentHistory = new CommentHistory()
+            {
+
+                CommentId = comments.Id,
+                Text = comment.Text,
+                UpdatedAt = DateTime.Now,
+            };
                 _context.Comments.Add(comments);
+            _context.Histories.Add(commentHistory);
                 await _context.SaveChangesAsync();
                 return Ok();
             

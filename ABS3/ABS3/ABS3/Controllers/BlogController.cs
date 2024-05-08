@@ -12,10 +12,12 @@ namespace ABS3.Controllers
     public class BlogController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public BlogController(AppDbContext context)
+        public BlogController(AppDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -41,34 +43,80 @@ namespace ABS3.Controllers
 
         }
 
+        /*  [Authorize]
+          [HttpPost]
+          [Route("CreateBlog")]
+          public async Task<IActionResult> AddBlog([FromForm] BlogDto model)
+          {
+              var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == "UserId");
 
-        [HttpPost]
-        [Route("CreateBlog")]
-        public async Task<IActionResult> AddBlog(BlogDto model)
-        {
-            var userId = User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+              if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
+              {
+                  return BadRequest("User is not authenticated or user ID is missing.");
+              }
 
-            var blog = new Blog
-            {
-                Title = model.Title,
-                Content = model.Content,
-                Category = model.Category,
-                CreatedAt = DateTime.Now,
-                UserId = int.Parse(userId),
-                IsEdited = false,
-                UpdatedAt = null,
-                UpVoteCount = 0,
-                DownVoteCount = 0,
-                Score = 0,
-                Image = null,
-            };
+              if (model == null)
+              {
+                  return BadRequest("Invalid Submission!");
+              }
 
-            _context.Blogs.Add(blog);
-            await _context.SaveChangesAsync();
+              if (!int.TryParse(userIdClaim.Value, out var userId))
+              {
+                  return BadRequest("Invalid user ID format.");
+              }
 
-            return Ok(blog);
-        }
+              var blog = new Blog
+              {
+                  Title = model.Title,
+                  Content = model.Content,
+                  Category = model.Category,
+                  CreatedOn = DateTime.Now.ToString(),
+                  UserId = userId,
+                  IsEdited = false,
+                  UpVoteCount = 0,
+                  DownVoteCount = 0
+              };
 
+              _context.Blogs.Add(blog);
+              await _context.SaveChangesAsync();
+
+              var lastBlogId = blog.Id;
+
+              if (model.BlogImage != null && model.BlogImage.Length > 0)
+              {
+                  var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+
+                  if (!Directory.Exists(directoryPath))
+                  {
+                      Directory.CreateDirectory(directoryPath);
+                  }
+
+                  string fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.BlogImage.FileName);
+
+                  string filePath = Path.Combine(directoryPath, fileName);
+
+                  using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                  {
+                      await model.BlogImage.CopyToAsync(stream);
+                  }
+
+                  var BlogImageModel = new ImageDto
+                  {
+                      BlogImageID = lastBlogId,
+                      ImageName = fileName,
+                      ImagePath = filePath
+                  };
+
+                  _context.Add(BlogImageModel);
+              }
+
+              await _context.SaveChangesAsync();
+
+              return Ok(model);
+
+
+          }
+  */
         [Authorize]
         [HttpPut("upvote/{id}")]
         public async Task<IActionResult> BlogUpvote(int id)
@@ -169,6 +217,8 @@ namespace ABS3.Controllers
             _context.BlogReactions.Add(BlogReaction);
             await _context.SaveChangesAsync();
             return Ok();
+
+
         }
 
         [Authorize]
@@ -200,13 +250,13 @@ namespace ABS3.Controllers
                 Content = blogDto.Content,
                 Category = blogDto.Category,
                 BlogId = id,
-                UpdatedAt = DateTime.Now,
-
+                UpdatedAt = DateTime.Now
             };
             _context.BlogHistories.Add(BlogHistory);
             await _context.SaveChangesAsync();
             return Ok();
         }
+
         [Authorize]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteBlogs(int id)
@@ -223,13 +273,73 @@ namespace ABS3.Controllers
                 _context.BlogReactions.RemoveRange(blogReaction);
             }
 
-
             _context.Blogs.RemoveRange(blog);
 
             await _context.SaveChangesAsync();
             return Ok();
 
 
+        }
+
+        [HttpPost]
+        [Route("UploadBlog")]
+        public async Task<IActionResult> BlogUpload([FromForm] BlogDto model)
+        {
+            if (model?.BlogImage == null || model.BlogImage.Length <= 0)
+            {
+                return BadRequest("No file was uploaded.");
+            }
+
+            if (string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.Content) || string.IsNullOrEmpty(model.Category))
+            {
+                return BadRequest("Title, content, or category is missing.");
+            }
+
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.BlogImage.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.BlogImage.CopyToAsync(fileStream);
+            }
+            var userId = User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+
+            var blog = new Blog
+            {
+                Title = model.Title,
+                Content = model.Content,
+                Category = model.Category,
+                ImagePath = filePath,
+                Score = 0,
+                UserId = int.Parse(userId),
+                IsEdited = false,
+                UpdatedAt = null,
+                UpVoteCount = 0,
+                DownVoteCount = 0,
+                CreatedAt = DateTime.Now
+            };
+            var blogHistory = new BlogHistory
+            {
+                BlogId = blog.Id,
+                Title = model.Title,
+                Content = model.Content,
+                Category = model.Category,
+                UpdatedAt = DateTime.Now,
+            };
+
+
+            _context.Blogs.Add(blog);
+            _context.BlogHistories.Add(blogHistory);
+            await _context.SaveChangesAsync();
+
+            return Ok("File uploaded successfully.");
         }
     }
 }

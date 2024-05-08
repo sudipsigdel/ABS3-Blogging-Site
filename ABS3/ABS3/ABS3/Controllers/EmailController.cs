@@ -49,5 +49,44 @@ namespace ABS3.Controllers
             var result = mail.Email(user.Email, otp);
             return Ok();
         }
+        [HttpPost("CodeValidate")]
+        public async Task<ActionResult> CodeValidation(int code, string email)
+        {
+            
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if(user == null)
+            {
+                return NotFound("User Not Found");
+            }
+            var codeData = _context.Codes.FirstOrDefault(u => u.OTP == code && u.UserId == user.Id);
+
+            if(codeData == null)
+            {
+                return NotFound("Code Not Found");
+            }
+            if(codeData.Expiry < DateTime.Now)
+            {
+                return Unauthorized("Code Expired");
+            }
+            return Ok();
+
+
+        }
+        [HttpGet("password")]
+        public async Task<ActionResult> PasswordChange( string email, string password)
+        {
+            var passwordHash = Hash.HashPassword(password);
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            user.Password = passwordHash;
+            await _context.SaveChangesAsync();
+            return Ok("Password Changed");
+        }
+
+
+
     }
 }

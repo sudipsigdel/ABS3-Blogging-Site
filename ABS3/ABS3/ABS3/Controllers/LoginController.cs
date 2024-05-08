@@ -1,4 +1,5 @@
 ﻿using ABS3.Model;
+using ABS3.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,8 @@ namespace ABS3.Controllers
         //return the object of the user that is logged in
         private User AuthenticateLogin(LoginDto request)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
+            var password = Hash.HashPassword(request.Password);
+            var user = _context.Users.FirstOrDefault(u => u.Email == request.Email && u.Password == password);
             return user;
         }
 
