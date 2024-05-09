@@ -15,6 +15,7 @@ import swal from "sweetalert";
 
 const AdminUsers = () => {
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
 
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -30,6 +31,36 @@ const AdminUsers = () => {
     document.title = "ABS3 BLOG | Users";
   }, []);
 
+  const addAdmin = async (email) => {
+    console.log(email);
+    let adminApi = await fetch(
+      `https://localhost:7124/api/Admin/RoleUpdate?email=${email}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(adminApi);
+
+    if (adminApi.status === 200) {
+      swal({
+        title: "Success",
+        text: "User has been added as admin",
+        icon: "success",
+      });
+    } else {
+      swal({
+        title: "Error",
+        text: "User not found",
+        icon: "error",
+      });
+    }
+    setRefresh(refresh => !refresh);
+  };
+
   const openAdd = () => {
     swal({
       title: "Add Admin",
@@ -40,6 +71,16 @@ const AdminUsers = () => {
           placeholder: "Email",
         },
       },
+    }).then((email) => {
+      if (!email) {
+        swal({
+          title: "Error",
+          text: "Email cannot be empty",
+          icon: "error",
+        });
+      } else {
+        addAdmin(email);
+      }
     });
   };
 
@@ -61,7 +102,7 @@ const AdminUsers = () => {
 
   useEffect(() => {
     listUsers();
-  }, []);
+  }, [refresh]);
 
   console.log(userList);
 
@@ -81,12 +122,11 @@ const AdminUsers = () => {
             Add Admin
           </Button>
           <br />
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} style={{marginBottom: "2rem"}}>
             <Table sx={{ minWidth: 500 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>User ID</TableCell>
-                  <TableCell>Image</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Phone</TableCell>
@@ -104,17 +144,7 @@ const AdminUsers = () => {
                     <TableCell component="th" scope="row">
                       {user.id}
                     </TableCell>
-                    <TableCell>
-                      <img
-                        src={
-                          user.image
-                            ? `https://localhost:7124/${user.image}`
-                            : Logo
-                        }
-                        alt=""
-                        height={100}
-                      />
-                    </TableCell>
+
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone}</TableCell>

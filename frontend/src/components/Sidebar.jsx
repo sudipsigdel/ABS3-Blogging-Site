@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import swal from "sweetalert";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -20,6 +21,16 @@ const Sidebar = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const logout = async () => {
+    localStorage.clear();
+    swal("Logout Successfully", {
+      icon: "success",
+      timer: 2000,
+    });
+    handleClose();
+    navigate("/");
   };
 
   return (
@@ -78,7 +89,7 @@ const Sidebar = () => {
             <Button autoFocus onClick={handleClose}>
               No
             </Button>
-            <Button autoFocus>Yes</Button>
+            <Button autoFocus onClick={logout}>Yes</Button>
           </DialogActions>
         </Dialog>
       </Fragment>

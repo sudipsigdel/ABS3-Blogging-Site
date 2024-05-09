@@ -59,7 +59,7 @@ const AdminBlogs = () => {
         </div>
 
         <div className="admin-right">
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} style={{marginBottom: "2rem"}}>
             <Table sx={{ minWidth: 500 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -81,7 +81,7 @@ const AdminBlogs = () => {
                     <TableCell>
                       <img
                         src={blog.imagePath}
-                        alt={blog.title}
+                        alt="Blog Cover"
                         style={{ width: "100px" }}
                       />
                     </TableCell>
@@ -107,6 +107,7 @@ const AdminBlogs = () => {
                               <div key={index}>{item}</div>
                             ))}
                     </TableCell>
+                    <TableCell>{blog.userName}</TableCell>
                     <TableCell>{blog.upVoteCount}</TableCell>
                     <TableCell>{blog.downVoteCount}</TableCell>
                   </TableRow>

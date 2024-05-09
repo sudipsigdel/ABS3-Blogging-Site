@@ -165,7 +165,7 @@ namespace ABS3.Controllers
             {
                 return false;
             }
-            user.role = "admin";
+            user.role = "Admin";
             await _context.SaveChangesAsync();
             return true;
         }
