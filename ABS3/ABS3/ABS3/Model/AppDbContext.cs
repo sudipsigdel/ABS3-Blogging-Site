@@ -18,6 +18,7 @@ namespace ABS3.Model
         public DbSet<BlogHistory> BlogHistories { get; set; }
 
         public DbSet<Code> Codes { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         
 

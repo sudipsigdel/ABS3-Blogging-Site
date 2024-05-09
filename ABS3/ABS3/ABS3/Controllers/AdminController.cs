@@ -41,10 +41,9 @@ namespace ABS3.Controllers
         {
             return await _context.Blogs.SumAsync(a => a.UpVoteCount );
 
-
         }
 
-        [Authorize]
+        
         [HttpGet("GetBlogUpVoteMonth")]
         public async Task<int> GetBlogUpvoteMonth(int month)
         {
@@ -157,6 +156,18 @@ namespace ABS3.Controllers
                 return NotFound();
             }
             return Ok(topUsers);
+        }
+        [HttpPut("RoleUpdate")]
+        public async Task<bool> AddAdmin(string email)
+        {
+            var user =  _context.Users.FirstOrDefault(u => u.Email == email);
+            if(user == null)
+            {
+                return false;
+            }
+            user.role = "admin";
+            await _context.SaveChangesAsync();
+            return true;
         }
 
 

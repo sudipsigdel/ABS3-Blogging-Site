@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Logo from "../assets/logo.png";
 
@@ -11,6 +12,22 @@ import Button from "@mui/material/Button";
 import swal from "sweetalert";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  useEffect(() => {
+    if (!token || role !== "User") {
+      swal(
+        "Not Authorized",
+        "You are not authorized to visit profile page",
+        "error"
+      );
+      navigate("/welcome");
+    }
+  }, [token]);
+
   useEffect(() => {
     document.title = "ABS3 BLOG | Profile";
   }, []);

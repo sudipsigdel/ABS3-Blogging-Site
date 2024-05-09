@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Application Development\\ABS3\\ABS3\\ABS3.csproj": {}
+    "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\ABS3\\ABS3.csproj": {}
   },
   "projects": {
-    "D:\\Application Development\\ABS3\\ABS3\\ABS3.csproj": {
+    "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\ABS3\\ABS3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Application Development\\ABS3\\ABS3\\ABS3.csproj",
+        "projectUniqueName": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\ABS3\\ABS3.csproj",
         "projectName": "ABS3",
-        "projectPath": "D:\\Application Development\\ABS3\\ABS3\\ABS3.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\Application Development\\ABS3\\ABS3\\obj\\",
+        "projectPath": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\ABS3\\ABS3.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\ABS3\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -59,6 +59,10 @@
               "version": "[5.3.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.AspNetCore.SignalR.Common": {
               "target": "Package",
               "version": "[8.0.4, )"
             },
@@ -104,7 +108,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

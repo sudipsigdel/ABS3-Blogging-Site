@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Logo from "../assets/logo.png";
 
 const Details = () => {
   useEffect(() => {
     document.title = "ABS3 BLOG | {Blog Name}";
+  }, []);
+
+  const { id } = useParams();
+  const [blog, setBlog] = useState([]);
+
+  useEffect(() => {
+    const getBlog = async () => {
+      let blogApi = await fetch(`https://localhost:7124/api/Blog/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      let blog = await blogApi.json();
+
+      if (blog) {
+        setBlog(blog[0]);
+      }
+    };
+
+    getBlog();
   }, []);
 
   return (
@@ -15,98 +37,32 @@ const Details = () => {
         <div className="left">
           <div className="heading">
             <p className="tag">
-              <i className="fa fa-tag"></i> Lifestyle
+              <i className="fa fa-tag"></i> {blog.category}
             </p>
-            <div className="title">100 Days at the Library: Intro</div>
+            <div className="title">{blog.title}</div>
             <div className="details">
               <span>
                 <img
                   src="https://dummyimage.com/500x600/000/fff"
                   alt=""
-                  srcset=""
+                  srcSet=""
                   width={50}
                   height={50}
                   style={{ borderRadius: "50%" }}
                 />
               </span>
-              <span style={{ marginLeft: "1rem" }}>Steph Lawson</span> | Feb 12,
-              2024
+              <span style={{ marginLeft: "1rem" }}>{blog.userId}</span> |{" "}
+              {new Date(blog.createdAt)
+                .toISOString()
+                .split(".")[0]
+                .replace("T", " ")}
             </div>
           </div>
 
           <div className="content">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-              cumque, voluptates, quas, quod doloremque quae voluptatum
-              laboriosam repudiandae tempora quos dolorem. Quisquam, quod
-              voluptate. Quisquam, quod voluptate. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione.
-            </p>
+            <p>{blog.content}</p>
 
-            <img src={Logo} alt="" srcset="" />
-
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-              cumque, voluptates, quas, quod doloremque quae voluptatum
-              laboriosam repudiandae tempora quos dolorem. Quisquam, quod
-              voluptate. Quisquam, quod voluptate. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione.
-            </p>
-
-            <img src={Logo} alt="" srcset="" />
-
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-              cumque, voluptates, quas, quod doloremque quae voluptatum
-              laboriosam repudiandae tempora quos dolorem. Quisquam, quod
-              voluptate. Quisquam, quod voluptate. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Consequatur expedita consequuntur
-              possimus est voluptates nesciunt impedit, adipisci iusto
-              voluptatem eligendi eum autem necessitatibus dolor sint esse.
-              Provident, culpa. Dolores, ratione.
-            </p>
+            <img src={blog.imagePath} alt="" srcSet="" />
           </div>
         </div>
 

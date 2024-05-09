@@ -37,7 +37,8 @@ namespace ABS3.Migrations
                     b.Property<int>("DownVoteCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsEdited")
@@ -239,6 +240,32 @@ namespace ABS3.Migrations
                     b.ToTable("Reactions");
                 });
 
+            modelBuilder.Entity("ABS3.Model.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NotificationMsg")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("ABS3.Model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -369,6 +396,17 @@ namespace ABS3.Migrations
                     b.Navigation("comment");
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("ABS3.Model.Notification", b =>
+                {
+                    b.HasOne("ABS3.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ABS3.Model.User", b =>

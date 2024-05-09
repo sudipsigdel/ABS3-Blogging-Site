@@ -22,13 +22,31 @@ namespace ABS3.Controllers
 
         [HttpGet]
         [Route("GetBlogs")]
-        public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
+        public async Task<ActionResult<IEnumerable<BlogDisplayDTO>>> GetBlogs()
         {
-            if (_context.Blogs == null)
+            var blogs = await _context.Blogs
+        .Include(b => b.User) // Include the User navigation property
+        .ToListAsync();
+
+
+            var blogDtos = blogs.Select(blog => new BlogDisplayDTO
             {
-                return NotFound();
-            }
-            return await _context.Blogs.ToListAsync();
+                Id = blog.Id,
+                Title = blog.Title,
+                Content = blog.Content,
+                Score = blog.Score,
+                ImagePath = blog.ImagePath,
+                UserId = blog.UserId,
+                UserName = blog.User.Name, // Assuming User has a Name property
+                Category = blog.Category,
+                CreatedAt = blog.CreatedAt,
+                UpdatedAt = blog.UpdatedAt,
+                IsEdited = blog.IsEdited,
+                UpVoteCount = blog.UpVoteCount,
+                DownVoteCount = blog.DownVoteCount
+            });
+
+            return Ok(blogDtos);
         }
 
         [HttpGet("{id}")]
@@ -122,6 +140,7 @@ namespace ABS3.Controllers
         public async Task<IActionResult> BlogUpvote(int id)
         {
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+            var userName = User.Claims.FirstOrDefault(claim => claim.Type == "UserName")?.Value;
             var blog = await _context.Blogs.FindAsync(id);
             if (blog == null)
             {
@@ -163,6 +182,17 @@ namespace ABS3.Controllers
                 IsUpVote = true,
                 IsDownVote = false
             };
+
+            var notification = new Notification()
+            {
+                UserId = blog.UserId,
+                NotificationMsg = userName + " has Liked on your blog.",
+                CreatedOn = DateTime.Now,
+                IsViewed = false
+            };
+            _context.Notifications.Add(notification);
+
+
             _context.BlogReactions.Add(BlogReaction);
             await _context.SaveChangesAsync();
             return Ok();
@@ -311,7 +341,7 @@ namespace ABS3.Controllers
             }
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
 
-            var blog = new Blog
+            var blog = new Blog()
             {
                 Title = model.Title,
                 Content = model.Content,
@@ -325,18 +355,11 @@ namespace ABS3.Controllers
                 DownVoteCount = 0,
                 CreatedAt = DateTime.Now
             };
-            var blogHistory = new BlogHistory
-            {
-                BlogId = blog.Id,
-                Title = model.Title,
-                Content = model.Content,
-                Category = model.Category,
-                UpdatedAt = DateTime.Now,
-            };
+            
 
 
             _context.Blogs.Add(blog);
-            _context.BlogHistories.Add(blogHistory);
+            
             await _context.SaveChangesAsync();
 
             return Ok("File uploaded successfully.");

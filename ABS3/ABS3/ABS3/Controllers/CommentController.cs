@@ -25,6 +25,9 @@ namespace ABS3.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(CommentDto comment) {
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+            var userName = User.Claims.FirstOrDefault(claim => claim.Type == "UserName")?.Value;
+            var blog = _context.Blogs.FirstOrDefault(a => a.Id == comment.Blog);
+
             
                 var comments = new Comment()
                 {
@@ -37,20 +40,20 @@ namespace ABS3.Controllers
                     UpdatedAt = null,
                     UpVoteCount = 0,
                     DownVoteCount = 0
-
-
-
                 };
+                blog.Score = blog.Score + 1;
 
-            var commentHistory = new CommentHistory()
-            {
+                var notification = new Notification()
+                {
+                    UserId = blog.UserId,
+                    NotificationMsg = userName + " has commented on your blog.",
+                    CreatedOn = DateTime.Now,
+                    IsViewed = false
+                };
+                _context.Notifications.Add(notification);
 
-                CommentId = comments.Id,
-                Text = comment.Text,
-                UpdatedAt = DateTime.Now,
-            };
+            
                 _context.Comments.Add(comments);
-            _context.Histories.Add(commentHistory);
                 await _context.SaveChangesAsync();
                 return Ok();
             
@@ -190,17 +193,20 @@ namespace ABS3.Controllers
                 return Unauthorized();
             }
 
+            
+
+            var CommentHistory = new CommentHistory()
+            {
+                Text = comment.Text,
+                CommentId = comment.Id,
+                UpdatedAt = DateTime.Now,
+
+            };
+
             comment.Text = commentData.Text;
             comment.IsEdited = true;
             comment.UpdatedAt = DateTime.Now;
 
-            var CommentHistory = new CommentHistory()
-            {
-                Text = commentData.Text,
-                CommentId = id,
-                UpdatedAt = DateTime.Now,
-
-            };
             _context.Histories.Add(CommentHistory);
             await _context.SaveChangesAsync();
             return Ok();

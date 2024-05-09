@@ -117,7 +117,8 @@
   margin: 15px 0 10px;
 }
 
-.container button {
+.container button,
+.container input[type="submit"] {
   background-color: #1a4d2e;
   color: #fff;
   font-size: 16px;
@@ -131,7 +132,8 @@
   cursor: pointer;
 }
 
-.container button.hidden {
+.container button.hidden,
+.container input[type="submit"].hidden {
   background-color: transparent;
   border-color: #fff;
 }
@@ -277,6 +279,7 @@
   margin: auto;
   width: 75%;
   margin-top: 8rem;
+  min-height: 70vh;
 }
 
 .home-container:nth-last-child(1) {
@@ -361,7 +364,7 @@
   background-color: #1a4d2e;
   padding: 0.5rem 1rem;
   border-radius: 10px;
-  width: 6.7rem;
+  width: 6.8rem;
 }
 
 .home-container > .contain > .left > .see-more > a:hover {
@@ -765,4 +768,41 @@
 
 .home-container > .notification-content > p:nth-child(1) {
   background-color: #dad4d4;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-around;
+  width: 20%;
+  margin: 2rem auto;
+}
+
+.pagination > button {
+  background-color: #1a4d2e;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.pagination > button:hover {
+  background-color: #12372a;
+}
+
+.pagination > span {
+  font-size: 1rem;
+  color: #12372a;
+  font-weight: 900;
+  padding: 0.5rem 2rem;
+}
+
+.pagination > button:disabled {
+  background-color: #f2f2f2;
+  color: #12372a;
+  cursor: not-allowed;
 }

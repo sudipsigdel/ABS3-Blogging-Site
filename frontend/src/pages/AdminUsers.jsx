@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Logo from "../assets/logo.png";
 
@@ -13,6 +14,22 @@ import Button from "@mui/material/Button";
 import swal from "sweetalert";
 
 const AdminUsers = () => {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  // useEffect(() => {
+  //   if (!token || role !== "Admin") {
+  //     swal("Not Authorized", "This page is for Admin only", "error");
+  //     navigate("/welcome");
+  //   }
+  // }, [token]);
+
+  useEffect(() => {
+    document.title = "ABS3 BLOG | Users";
+  }, []);
+
   const openAdd = () => {
     swal({
       title: "Add Admin",
@@ -26,9 +43,28 @@ const AdminUsers = () => {
     });
   };
 
+  const [userList, setUserList] = useState([]);
+
+  const listUsers = async () => {
+    let userApi = await fetch("https://localhost:7124/api/User", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let users = await userApi.json();
+
+    if (users.length > 0) {
+      setUserList(users);
+    }
+  };
+
   useEffect(() => {
-    document.title = "ABS3 BLOG | Users";
+    listUsers();
   }, []);
+
+  console.log(userList);
+
   return (
     <>
       <div className="admin-container">
@@ -54,24 +90,37 @@ const AdminUsers = () => {
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Phone</TableCell>
+                  <TableCell>Role</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    Id
-                  </TableCell>
-                  <TableCell>
-                    <img src={Logo} alt="" height={100} />
-                  </TableCell>
-                  <TableCell>1</TableCell>
-                  <TableCell>1</TableCell>
-                  <TableCell>1</TableCell>
-                </TableRow>
+                {userList.map((user) => (
+                  <TableRow
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                    key={user.id}
+                  >
+                    <TableCell component="th" scope="row">
+                      {user.id}
+                    </TableCell>
+                    <TableCell>
+                      <img
+                        src={
+                          user.image
+                            ? `https://localhost:7124/${user.image}`
+                            : Logo
+                        }
+                        alt=""
+                        height={100}
+                      />
+                    </TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.phone}</TableCell>
+                    <TableCell>{user.role}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

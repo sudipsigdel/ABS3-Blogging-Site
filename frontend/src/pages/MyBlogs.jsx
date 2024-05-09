@@ -1,4 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import Navbar from "../components/Navbar";
 import Logo from "../assets/logo.png";
 
@@ -18,6 +20,22 @@ import TextField from "@mui/material/TextField";
 import DialogContentText from "@mui/material/DialogContentText";
 
 const MyBlogs = () => {
+  const navigate = useNavigate();
+  
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  useEffect(() => {
+    if (!token || role !== "User") {
+      swal(
+        "Not Authorized",
+        "You are not authorized to see your blogs without login",
+        "error"
+      );
+      navigate("/welcome");
+    }
+  }, [token]);
+
   useEffect(() => {
     document.title = "ABS3 BLOG | My Blogs";
   }, []);

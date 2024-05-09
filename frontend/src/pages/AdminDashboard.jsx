@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import Sidebar from "../components/Sidebar";
 
 import Card from "@mui/material/Card";
@@ -9,11 +11,204 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import Stack from "@mui/material/Stack";
+import Item from "@mui/material/ListItem";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  // useEffect(() => {
+  //   if (!token || role !== "Admin") {
+  //     swal(
+  //       "Not Authorized",
+  //       "This page is for Admin only",
+  //       "error"
+  //     );
+  //     navigate("/welcome");
+  //   }
+  // }, [token]);
+
   useEffect(() => {
     document.title = "ABS3 BLOG | Admin";
   }, []);
+  const [selectedMonthStats, setSelectedMonthStats] = useState(0);
+  const [selectedMonthTopBlog, setSelectedMonthTopBlog] = useState(1);
+  const [selectedMonthTopBlogger, setSelectedMonthTopBlogger] = useState(1);
+
+  const [blog, setBlog] = useState([]);
+  const [upvote, setUpvote] = useState([]);
+  const [downvote, setDownvote] = useState([]);
+  const [comment, setComment] = useState([]);
+
+  const [topBlog, setTopBlog] = useState([]);
+  const [topBlogMonth, setTopBlogMonth] = useState([]);
+  const [topBlogger, setTopBlogger] = useState([]);
+  const [topBloggerMonth, setTopBloggerMonth] = useState([]);
+
+  const listStats = async () => {
+    let blogApi = await fetch("https://localhost:7124/api/Admin/Blog", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    let blogs = await blogApi.json();
+    setBlog(blogs);
+
+    let upvoteApi = await fetch(
+      "https://localhost:7124/api/Admin/GetBlogUpVote",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let upvotes = await upvoteApi.json();
+    setUpvote(upvotes);
+
+    let downvoteApi = await fetch(
+      "https://localhost:7124/api/Admin/GetBlogDownVote",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let downvotes = await downvoteApi.json();
+    setDownvote(downvotes);
+
+    let commentApi = await fetch(
+      "https://localhost:7124/api/Admin/GetCommentCount",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let comments = await commentApi.json();
+    setComment(comments);
+  };
+
+  const listMonthlyStats = async () => {
+    let blogMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/BlogMonth?id=" + selectedMonthStats,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let blogsMonth = await blogMonthApi.json();
+    setBlog(blogsMonth);
+
+    let upvoteMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/GetBlogUpVoteMonth?month=" +
+        selectedMonthStats,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let upvotesMonth = await upvoteMonthApi.json();
+    setUpvote(upvotesMonth);
+
+    let downvoteMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/GetBlogDownVoteMonth?month=" +
+        selectedMonthStats,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let downvotesMonth = await downvoteMonthApi.json();
+    setDownvote(downvotesMonth);
+
+    let commentMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/GetCommentCountMonth?month=" +
+        selectedMonthStats,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let commentsMonth = await commentMonthApi.json();
+    setComment(commentsMonth);
+  };
+
+  const listTopBlog = async () => {
+    let topBlogApi = await fetch("https://localhost:7124/api/Admin/TopBlog", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    let topBlogs = await topBlogApi.json();
+    setTopBlog(topBlogs);
+
+    let topBlogMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/TopBlogMonth?month=" +
+        selectedMonthTopBlog,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let topBlogsMonth = await topBlogMonthApi.json();
+    setTopBlogMonth(topBlogsMonth);
+
+    let topBloggerApi = await fetch(
+      "https://localhost:7124/api/Admin/TopUser",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let topBloggers = await topBloggerApi.json();
+    setTopBlogger(topBloggers);
+
+    let topBloggerMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/TopUserMonth?month=" +
+        selectedMonthTopBlogger,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let topBloggersMonth = await topBloggerMonthApi.json();
+    setTopBloggerMonth(topBloggersMonth);
+  };
+
+  useEffect(() => {
+    if (selectedMonthStats === 0) {
+      listStats();
+    } else {
+      listMonthlyStats();
+    }
+  }, [selectedMonthStats]);
+
+  useEffect(() => {
+    listTopBlog();
+  }, []);
+
   return (
     <>
       <div className="admin-container">
@@ -28,11 +223,12 @@ const AdminDashboard = () => {
             size="small"
             style={{ marginLeft: "auto", marginBottom: "1rem" }}
           >
-            <InputLabel id="demo-simple-select-label">Select Month</InputLabel>
+            <InputLabel>Select Month</InputLabel>
             <Select
               labelId="demo-simple-select-label"
-              id="demo-simple-select"
               label="Select Month"
+              value={selectedMonthStats}
+              onChange={(e) => setSelectedMonthStats(e.target.value)}
             >
               <MenuItem value={0} defaultChecked>
                 All
@@ -78,7 +274,7 @@ const AdminDashboard = () => {
                     sx={{ fontSize: 20 }}
                     align="center"
                   >
-                    1
+                    {blog}
                   </Typography>
                 </CardContent>
               </Card>
@@ -101,7 +297,7 @@ const AdminDashboard = () => {
                     color="white"
                     align="center"
                   >
-                    11
+                    {upvote}
                   </Typography>
                 </CardContent>
               </Card>
@@ -124,7 +320,7 @@ const AdminDashboard = () => {
                     color="white"
                     align="center"
                   >
-                    11
+                    {downvote}
                   </Typography>
                 </CardContent>
               </Card>
@@ -147,7 +343,7 @@ const AdminDashboard = () => {
                     color="white"
                     align="center"
                   >
-                    11
+                    {comment}
                   </Typography>
                 </CardContent>
               </Card>
@@ -157,10 +353,26 @@ const AdminDashboard = () => {
           <div className="top10">
             <div className="left">
               <h2>Top 10 Blog of all time</h2>
+              <br />
+              <Stack spacing={2}>
+                {topBlog.map((blog, index) => (
+                  <Item key={index}>
+                    {blog.title} - {blog.score}
+                  </Item>
+                ))}
+              </Stack>
             </div>
 
             <div className="right">
               <h2>Top 10 Bloggers of all time</h2>
+              <br />
+              <Stack spacing={2}>
+                {topBlogger.map((blogger, index) => (
+                  <Item key={index}>
+                    {blogger.userName} - {blogger.totalBlogScore}
+                  </Item>
+                ))}
+              </Stack>
             </div>
           </div>
 
@@ -177,13 +389,12 @@ const AdminDashboard = () => {
                 size="small"
                 style={{ marginLeft: "auto" }}
               >
-                <InputLabel id="demo-simple-select-label">
-                  Select Month
-                </InputLabel>
+                <InputLabel>Select Month</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
-                  id="demo-simple-select"
                   label="Select Month"
+                  value={selectedMonthTopBlog}
+                  onChange={(e) => setSelectedMonthTopBlog(e.target.value)}
                 >
                   <MenuItem value={1}>January</MenuItem>
                   <MenuItem value={2}>February</MenuItem>
@@ -199,6 +410,18 @@ const AdminDashboard = () => {
                   <MenuItem value={12}>December</MenuItem>
                 </Select>
               </FormControl>
+              <br />
+              <Stack spacing={2}>
+                {topBlogMonth.length > 0 ? (
+                  topBlogMonth.map((blog, index) => (
+                    <Item key={index}>
+                      {blog.title} - {blog.score}
+                    </Item>
+                  ))
+                ) : (
+                  <Item>No data found</Item>
+                )}
+              </Stack>
             </div>
 
             <div className="right">
@@ -208,13 +431,12 @@ const AdminDashboard = () => {
                 size="small"
                 style={{ marginLeft: "auto" }}
               >
-                <InputLabel id="demo-simple-select-label">
-                  Select Month
-                </InputLabel>
+                <InputLabel>Select Month</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
-                  id="demo-simple-select"
                   label="Select Month"
+                  value={selectedMonthTopBlogger}
+                  onChange={(e) => setSelectedMonthTopBlogger(e.target.value)}
                 >
                   <MenuItem value={1}>January</MenuItem>
                   <MenuItem value={2}>February</MenuItem>
@@ -230,6 +452,18 @@ const AdminDashboard = () => {
                   <MenuItem value={12}>December</MenuItem>
                 </Select>
               </FormControl>
+              <br />
+              <Stack spacing={2}>
+                {topBloggerMonth.length > 0 ? (
+                  topBloggerMonth.map((blogger, index) => (
+                    <Item key={index}>
+                      {blogger.userName} - {blogger.totalBlogScore}
+                    </Item>
+                  ))
+                ) : (
+                  <Item>No data found</Item>
+                )}
+              </Stack>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -7,16 +8,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import MailIcon from "@mui/icons-material/Mail";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import swal from "sweetalert";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -28,6 +25,16 @@ const Navbar = () => {
   };
 
   const [count, setCount] = useState("");
+
+  const logout = async () => {
+    localStorage.clear();
+    swal("Logout Successfully", {
+      icon: "success",
+      timer: 2000,
+    });
+    handleClose();
+    navigate("/");
+  };
 
   return (
     <nav className="navbar">
@@ -41,35 +48,35 @@ const Navbar = () => {
         <input type="text" placeholder="Search here" />
       </div>
 
-      <div class="right">
+      <div className="right">
         <a href="/notification">
           <Badge color="error" badgeContent={count} variant="dot">
-            <i class="fa fa-bell"></i>
+            <i className="fa fa-bell"></i>
           </Badge>
         </a>
 
-        <div class="dropdown">
+        <div className="dropdown">
           <i
-            class="fa fa-user dropdown-toggle"
+            className="fa fa-user dropdown-toggle"
             id="profileDropdown"
             aria-haspopup="true"
             aria-expanded="false"
           ></i>
-          <div class="dropdown-menu" aria-labelledby="profileDropdown">
-            <a class="dropdown-item" href="/profile">
+          <div className="dropdown-menu" aria-labelledby="profileDropdown">
+            <a className="dropdown-item" href="/profile">
               Profile
             </a>
-            <a class="dropdown-item" href="/blogs">
+            <a className="dropdown-item" href="/blogs">
               My Blogs
             </a>
-            <a class="dropdown-item" href="/admin">
+            <a className="dropdown-item" href="/admin">
               Admin
             </a>
             <hr />
-            <a class="dropdown-item" href="/welcome">
+            <a className="dropdown-item" href="/welcome">
               Login
             </a>
-            <div class="dropdown-item" onClick={handleOpen}>
+            <div className="dropdown-item" onClick={handleOpen}>
               Logout
             </div>
           </div>
@@ -90,7 +97,7 @@ const Navbar = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>No</Button>
-            <Button>Yes</Button>
+            <Button onClick={logout}>Yes</Button>
           </DialogActions>
         </Dialog>
       </Fragment>

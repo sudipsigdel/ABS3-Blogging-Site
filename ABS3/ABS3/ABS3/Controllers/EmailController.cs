@@ -72,7 +72,7 @@ namespace ABS3.Controllers
 
 
         }
-        [HttpGet("password")]
+        [HttpPut("password")]
         public async Task<ActionResult> PasswordChange( string email, string password)
         {
             var passwordHash = Hash.HashPassword(password);

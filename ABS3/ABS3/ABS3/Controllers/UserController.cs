@@ -47,7 +47,7 @@ namespace ABS3.Controllers
             return user;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<ActionResult<User>> PostUser(UserDto user)
         {
 

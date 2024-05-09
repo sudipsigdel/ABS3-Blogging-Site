@@ -37,7 +37,7 @@ namespace ABS3.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
                     Score = table.Column<int>(type: "INTEGER", nullable: false),
-                    Image = table.Column<string>(type: "TEXT", nullable: true),
+                    ImagePath = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     Category = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -72,6 +72,28 @@ namespace ABS3.Migrations
                     table.PrimaryKey("PK_Codes", x => x.id);
                     table.ForeignKey(
                         name: "FK_Codes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NotificationMsg = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IsViewed = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -252,6 +274,11 @@ namespace ABS3.Migrations
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_UserId",
+                table: "Notifications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reactions_CommentId",
                 table: "Reactions",
                 column: "CommentId");
@@ -276,6 +303,9 @@ namespace ABS3.Migrations
 
             migrationBuilder.DropTable(
                 name: "Histories");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "Reactions");
