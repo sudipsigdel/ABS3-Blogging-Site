@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "Hash": "eCgXOdaFWmH7va88s0B52SDBR8BuKCBSILheAF7rsJg=",
+  "Source": "ABS3",
+  "BasePath": "_content/ABS3",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ABS3\\wwwroot",
+      "Source": "ABS3",
+      "ContentRoot": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\",
+      "BasePath": "_content/ABS3",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.js",
+      "SourceId": "ABS3",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\",
+      "BasePath": "_content/ABS3",
+      "RelativePath": "js/dist/browser/signalr.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\dist\\browser\\signalr.js"
+    },
+    {
+      "Identity": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.min.js",
+      "SourceId": "ABS3",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\",
+      "BasePath": "_content/ABS3",
+      "RelativePath": "js/dist/browser/signalr.min.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\dist\\browser\\signalr.min.js"
+    }
+  ]
+}

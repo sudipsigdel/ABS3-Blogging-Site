@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import Logo from "../assets/logo.png";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,12 +19,12 @@ const AdminUsers = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  // useEffect(() => {
-  //   if (!token || role !== "Admin") {
-  //     swal("Not Authorized", "This page is for Admin only", "error");
-  //     navigate("/welcome");
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (!token || role.toLowerCase() !== "admin") {
+      swal("Not Authorized", "This page is for Admin only", "error");
+      navigate("/welcome");
+    }
+  }, [token]);
 
   useEffect(() => {
     document.title = "ABS3 BLOG | Users";
@@ -58,7 +57,7 @@ const AdminUsers = () => {
         icon: "error",
       });
     }
-    setRefresh(refresh => !refresh);
+    setRefresh((refresh) => !refresh);
   };
 
   const openAdd = () => {
@@ -122,11 +121,12 @@ const AdminUsers = () => {
             Add Admin
           </Button>
           <br />
-          <TableContainer component={Paper} style={{marginBottom: "2rem"}}>
+          <TableContainer component={Paper} style={{ marginBottom: "2rem" }}>
             <Table sx={{ minWidth: 500 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>User ID</TableCell>
+                  <TableCell>Image</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Phone</TableCell>
@@ -144,7 +144,17 @@ const AdminUsers = () => {
                     <TableCell component="th" scope="row">
                       {user.id}
                     </TableCell>
-
+                    <TableCell>
+                      {user.imagePath && (
+                        <img
+                          src={`https://localhost:7124/${user.imagePath.slice(
+                            user.imagePath.indexOf("uploads")
+                          )}`}
+                          alt="user"
+                          style={{ width: "auto", height: "100px" }}
+                        />
+                      )}
+                    </TableCell>
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone}</TableCell>

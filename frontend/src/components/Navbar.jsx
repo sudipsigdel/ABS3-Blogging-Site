@@ -8,12 +8,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import Badge from "@mui/material/Badge";
 import swal from "sweetalert";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  
+
+  const token = localStorage.getItem("token");
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -23,8 +24,6 @@ const Navbar = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [count, setCount] = useState("");
 
   const logout = async () => {
     localStorage.clear();
@@ -44,43 +43,41 @@ const Navbar = () => {
         </a>
       </div>
 
-      <div className="center">
-        <input type="text" placeholder="Search here" />
-      </div>
-
       <div className="right">
-        <a href="/notification">
-          <Badge color="error" badgeContent={count} variant="dot">
-            <i className="fa fa-bell"></i>
-          </Badge>
-        </a>
+        {token ? (
+          <>
+            <a href="/notification">
+              <i className="fa fa-bell"></i>
+            </a>
 
-        <div className="dropdown">
-          <i
-            className="fa fa-user dropdown-toggle"
-            id="profileDropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          ></i>
-          <div className="dropdown-menu" aria-labelledby="profileDropdown">
-            <a className="dropdown-item" href="/profile">
-              Profile
-            </a>
-            <a className="dropdown-item" href="/blogs">
-              My Blogs
-            </a>
-            <a className="dropdown-item" href="/admin">
-              Admin
-            </a>
-            <hr />
-            <a className="dropdown-item" href="/welcome">
-              Login
-            </a>
-            <div className="dropdown-item" onClick={handleOpen}>
-              Logout
+            <div className="dropdown">
+              <i
+                className="fa fa-user dropdown-toggle"
+                id="profileDropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div className="dropdown-menu" aria-labelledby="profileDropdown">
+                <a className="dropdown-item" href="/profile">
+                  Profile
+                </a>
+                <a className="dropdown-item" href="/blogs">
+                  My Blogs
+                </a>
+
+                <hr />
+
+                <div className="dropdown-item" onClick={handleOpen}>
+                  Logout
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <a className="dropdown-item" href="/welcome">
+            Login
+          </a>
+        )}
       </div>
 
       <Fragment>

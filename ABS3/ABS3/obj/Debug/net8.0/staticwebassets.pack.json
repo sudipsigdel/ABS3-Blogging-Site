@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.js",
+      "PackagePath": "staticwebassets\\js\\dist\\browser\\signalr.js"
+    },
+    {
+      "Id": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.min.js",
+      "PackagePath": "staticwebassets\\js\\dist\\browser\\signalr.min.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ABS3.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ABS3.props",
+      "PackagePath": "build\\ABS3.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ABS3.props",
+      "PackagePath": "buildMultiTargeting\\ABS3.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ABS3.props",
+      "PackagePath": "buildTransitive\\ABS3.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

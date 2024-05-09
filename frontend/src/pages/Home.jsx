@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Post from "../assets/post.png";
-import Logo from "../assets/logo.png";
 
 const Home = () => {
   useEffect(() => {
@@ -9,8 +8,7 @@ const Home = () => {
   }, []);
 
   const [blogList, setBlogList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [sort, setSort] = useState("random");
 
   const listBlogs = async () => {
     let blogApi = await fetch("https://localhost:7124/api/Blog/GetBlogs", {
@@ -26,11 +24,70 @@ const Home = () => {
     }
   };
 
+  const listLatest = async () => {
+    let response = await fetch("https://localhost:7124/api/Blog/BlogsRecency", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let latestBlogs = await response.json();
+
+    if (latestBlogs.length > 0) {
+      setBlogList(latestBlogs);
+    }
+  };
+
+  const listOldest = async () => {
+    let response = await fetch("https://localhost:7124/api/Blog/OldestBlogs", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let oldestBlogs = await response.json();
+
+    if (oldestBlogs.length > 0) {
+      setBlogList(oldestBlogs);
+    }
+  };
+
+  const listPopular = async () => {
+    let response = await fetch("https://localhost:7124/api/Blog/BlogsPopular", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let popularBlogs = await response.json();
+
+    if (popularBlogs.length > 0) {
+      setBlogList(popularBlogs);
+    }
+  };
+
+  const listRandom = async () => {
+    let response = await fetch("https://localhost:7124/api/Blog/RandomBlogs", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let randomBlogs = await response.json();
+
+    if (randomBlogs.length > 0) {
+      setBlogList(randomBlogs);
+    }
+  };
+
   useEffect(() => {
     listBlogs();
   }, []);
 
   console.log(blogList);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -55,25 +112,33 @@ const Home = () => {
 
       <div className="home-container">
         <div className="heading-top">
-          <div className="filter">
-            <span>Category: </span>
-            <select name="filter" id="filter">
-              <option value="all">All</option>
-              <option value="lifestyle">Lifestyle</option>
-              <option value="tech">Tech</option>
-              <option value="travel">Travel</option>
-              <option value="food">Food</option>
-            </select>
-          </div>
-
           <div className="sort">
             <span>Sort By: </span>
-            <select name="sort" id="sort">
-              <option value="random" defaultChecked>
-                Random
-              </option>
+            <select
+              name="sort"
+              id="sort"
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                if (e.target.value === "all") {
+                  listBlogs();
+                }
+                if (e.target.value === "latest") {
+                  listLatest();
+                } else if (e.target.value === "oldest") {
+                  listOldest();
+                } else if (e.target.value === "popular") {
+                  listPopular();
+                } else if (e.target.value === "random") {
+                  listRandom();
+                }
+              }}
+            >
+              <option value="random">Random</option>
+              <option value="popular">Popular</option>
               <option value="latest">Latest</option>
               <option value="oldest">Oldest</option>
+              <option value="all">All</option>
             </select>
           </div>
         </div>
@@ -87,16 +152,30 @@ const Home = () => {
                 </p>
                 <div className="title">{blog.title}</div>
                 <div className="details">
-                  <span style={{ marginLeft: "1rem" }}>{blog.userId}</span> |{" "}
-                  {new Date(blog.createdAt)
-                    .toISOString()
-                    .split(".")[0]
-                    .replace("T", " ")}
+                  {blog.image && (
+                    <span>
+                      <img
+                        src={`https://localhost:7124/${blog.image.slice(
+                          blog.image.indexOf("uploads")
+                        )}`}
+                        alt=""
+                        srcSet=""
+                        width={50}
+                        height={50}
+                        style={{ borderRadius: "50%", backgroundSize: "cover" }}
+                      />
+                    </span>
+                  )}
+                  <span style={{ marginLeft: "1rem", marginRight: "1rem" }}>
+                    {blog.userName}
+                  </span>
+
+                  {blog.createdAt.slice(0, 16).replace("T", " ")}
                 </div>
               </div>
 
               <div className="content">
-                <p>{blog.content}</p>
+                <p>{blog.content.slice(0, 150) + " ..."}</p>
               </div>
 
               <div className="see-more">
@@ -104,7 +183,12 @@ const Home = () => {
               </div>
             </div>
             <div className="right">
-              <img src={blog.imagePath} alt="" />
+              <img
+                src={`https://localhost:7124/${blog.imagePath.slice(
+                  blog.imagePath.indexOf("uploads")
+                )}`}
+                alt=""
+              />
             </div>
           </div>
         ))}

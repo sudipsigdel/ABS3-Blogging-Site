@@ -5,6 +5,7 @@ import "./assets/style.css";
 import Home from "./pages/Home";
 import LoginRegister from "./pages/LoginRegister";
 import Details from "./components/Details";
+import History from "./components/History";
 import Profile from "./pages/Profile";
 import MyBlogs from "./pages/MyBlogs";
 import Notification from "./pages/Notification";
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/welcome" element={<LoginRegister />} />
           <Route path="/details/:id" element={<Details />} />
+          <Route path="/history/:id" element={<History />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/blogs" element={<MyBlogs />} />
           <Route path="/notification" element={<Notification />} />

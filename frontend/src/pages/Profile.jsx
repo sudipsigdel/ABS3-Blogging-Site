@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Logo from "../assets/logo.png";
 
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
@@ -18,7 +17,7 @@ const Profile = () => {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    if (!token || role !== "User") {
+    if (!token || role.toLowerCase() !== "user") {
       swal(
         "Not Authorized",
         "You are not authorized to visit profile page",
@@ -59,8 +58,110 @@ const Profile = () => {
     });
   };
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [profileData, setProfileData] = useState([]);
+
+  const profileDetails = async (e) => {
+    const response = await fetch(
+      "https://localhost:7124/api/User/GetCurrentUser",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+    setProfileData(data);
+    console.log(data);
+
+    setName(data.name);
+    setEmail(data.email);
+    setPhone(data.phone);
+  };
+  useEffect(() => {
+    if (token) {
+      profileDetails();
+    }
+  }, []);
+
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const changePassword = async (e) => {
+    e.preventDefault();
+    const response = await fetch(
+      "https://localhost:7124/api/User/UserProfilePassword?currentPassword=" +
+        password +
+        "&newPassword=" +
+        newPassword,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      swal("Success", "Password Changed Successfully", "success");
+      handleClose();
+      setPassword("");
+      setNewPassword("");
+    } else {
+      swal("Error", "Unable to change password", "error");
+    }
+  };
+
+  const updateProfile = async (e) => {
+    e.preventDefault();
+    const response = await fetch(
+      "https://localhost:7124/api/User?email=" +
+        email +
+        "&phone=" +
+        phone +
+        "&name=" +
+        name,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      swal("Success", "Profile updated", "success");
+      handleClose();
+      profileDetails();
+    } else {
+      swal("Error", "Unable to update profile", "error");
+    }
+  };
+
+  const deleteProfile = async (e) => {
+    e.preventDefault();
+    const response = await fetch(
+      "https://localhost:7124/api/User/DeleteProfile",
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      swal("Deleted", "Deleted Successfully", "success");
+      localStorage.clear();
+      navigate("/welcome");
+    }
+  };
 
   const style = {
     position: "absolute",
@@ -76,27 +177,33 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-
       <div class="profile-container">
         <div className="profile-header">
           <div className="profile-header-image">
-            <img src={Logo} alt="profile" />
+            {profileData.imagePath && (
+              <img
+                src={`https://localhost:7124/${profileData.imagePath.slice(
+                  profileData.imagePath.indexOf("uploads")
+                )}`}
+                alt="profile"
+              />
+            )}
           </div>
-          <h3>Welcome Sudip</h3>
+          <h3>Welcome {profileData.name}</h3>
         </div>
 
         <div className="profile-details">
           <div className="profile-details-row">
             <p>Name</p>
-            <p>Sudip</p>
+            <p>{profileData.name}</p>
           </div>
           <div className="profile-details-row">
             <p>Email</p>
-            <p>hello@sudipsigdel.com.np</p>
+            <p>{profileData.email}</p>
           </div>
           <div className="profile-details-row">
             <p>Phone</p>
-            <p>+977 9800000000</p>
+            <p>{profileData.phone}</p>
           </div>
           <div
             className="profile-details-row"
@@ -112,7 +219,7 @@ const Profile = () => {
               style={{
                 backgroundColor: "red",
               }}
-              onClick={handleDelete}
+              onClick={deleteProfile}
             >
               Delete Account
             </button>
@@ -136,6 +243,7 @@ const Profile = () => {
             id="outlined-basic"
             label="Old Password"
             variant="outlined"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={{ width: "100%", marginBottom: "10px" }}
@@ -144,6 +252,7 @@ const Profile = () => {
             id="outlined-basic"
             label="New Password"
             variant="outlined"
+            type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             style={{ width: "100%", marginBottom: "10px" }}
@@ -153,7 +262,12 @@ const Profile = () => {
             <Button onClick={handleClose} variant="contained" color="error">
               Cancel
             </Button>
-            <Button variant="contained" color="success" autoFocus>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={changePassword}
+              autoFocus
+            >
               Change Password
             </Button>
           </DialogActions>
@@ -176,12 +290,16 @@ const Profile = () => {
           <TextField
             id="outlined-basic"
             label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             variant="outlined"
             style={{ width: "100%", marginBottom: "10px" }}
           />
           <TextField
             id="outlined-basic"
             label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
             style={{ width: "100%", marginBottom: "10px" }}
             disabled
@@ -189,6 +307,8 @@ const Profile = () => {
           <TextField
             id="outlined-basic"
             label="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             variant="outlined"
             style={{ width: "100%", marginBottom: "10px" }}
           />
@@ -196,7 +316,12 @@ const Profile = () => {
             <Button onClick={handleClose} variant="contained" color="error">
               Cancel
             </Button>
-            <Button variant="contained" color="success" autoFocus>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={updateProfile}
+              autoFocus
+            >
               Save
             </Button>
           </DialogActions>

@@ -20,16 +20,12 @@ const AdminDashboard = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  // useEffect(() => {
-  //   if (!token || role !== "Admin") {
-  //     swal(
-  //       "Not Authorized",
-  //       "This page is for Admin only",
-  //       "error"
-  //     );
-  //     navigate("/welcome");
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (!token || role.toLowerCase() !== "admin") {
+      swal("Not Authorized", "This page is for Admin only", "error");
+      navigate("/welcome");
+    }
+  }, [token]);
 
   useEffect(() => {
     document.title = "ABS3 BLOG | Admin";
@@ -55,8 +51,10 @@ const AdminDashboard = () => {
         Authorization: "Bearer " + token,
       },
     });
-    let blogs = await blogApi.json();
-    setBlog(blogs);
+    if (blogApi.status === 200) {
+      let blogs = await blogApi.json();
+      setBlog(blogs);
+    }
 
     let upvoteApi = await fetch(
       "https://localhost:7124/api/Admin/GetBlogUpVote",
@@ -67,8 +65,10 @@ const AdminDashboard = () => {
         },
       }
     );
-    let upvotes = await upvoteApi.json();
-    setUpvote(upvotes);
+    if (upvoteApi.status === 200) {
+      let upvotes = await upvoteApi.json();
+      setUpvote(upvotes);
+    }
 
     let downvoteApi = await fetch(
       "https://localhost:7124/api/Admin/GetBlogDownVote",
@@ -79,8 +79,10 @@ const AdminDashboard = () => {
         },
       }
     );
-    let downvotes = await downvoteApi.json();
-    setDownvote(downvotes);
+    if (downvoteApi.status === 200) {
+      let downvotes = await downvoteApi.json();
+      setDownvote(downvotes);
+    }
 
     let commentApi = await fetch(
       "https://localhost:7124/api/Admin/GetCommentCount",
@@ -91,8 +93,10 @@ const AdminDashboard = () => {
         },
       }
     );
-    let comments = await commentApi.json();
-    setComment(comments);
+    if (commentApi.status === 200) {
+      let comments = await commentApi.json();
+      setComment(comments);
+    }
   };
 
   const listMonthlyStats = async () => {
@@ -148,7 +152,15 @@ const AdminDashboard = () => {
     setComment(commentsMonth);
   };
 
-  const listTopBlog = async () => {
+  useEffect(() => {
+    if (selectedMonthStats === 0) {
+      listStats();
+    } else {
+      listMonthlyStats();
+    }
+  }, [selectedMonthStats]);
+
+  const listTopAll = async () => {
     let topBlogApi = await fetch("https://localhost:7124/api/Admin/TopBlog", {
       method: "GET",
       headers: {
@@ -157,19 +169,6 @@ const AdminDashboard = () => {
     });
     let topBlogs = await topBlogApi.json();
     setTopBlog(topBlogs);
-
-    let topBlogMonthApi = await fetch(
-      "https://localhost:7124/api/Admin/TopBlogMonth?month=" +
-        selectedMonthTopBlog,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    let topBlogsMonth = await topBlogMonthApi.json();
-    setTopBlogMonth(topBlogsMonth);
 
     let topBloggerApi = await fetch(
       "https://localhost:7124/api/Admin/TopUser",
@@ -182,6 +181,21 @@ const AdminDashboard = () => {
     );
     let topBloggers = await topBloggerApi.json();
     setTopBlogger(topBloggers);
+  };
+
+  const listTopMonth = async () => {
+    let topBlogMonthApi = await fetch(
+      "https://localhost:7124/api/Admin/TopBlogMonth?month=" +
+        selectedMonthTopBlog,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let topBlogsMonth = await topBlogMonthApi.json();
+    setTopBlogMonth(topBlogsMonth);
 
     let topBloggerMonthApi = await fetch(
       "https://localhost:7124/api/Admin/TopUserMonth?month=" +
@@ -198,16 +212,12 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    if (selectedMonthStats === 0) {
-      listStats();
-    } else {
-      listMonthlyStats();
-    }
-  }, [selectedMonthStats]);
+    listTopAll();
+  }, []);
 
   useEffect(() => {
-    listTopBlog();
-  }, []);
+    listTopMonth();
+  }, [selectedMonthTopBlog, selectedMonthTopBlogger]);
 
   return (
     <>
@@ -230,9 +240,7 @@ const AdminDashboard = () => {
               value={selectedMonthStats}
               onChange={(e) => setSelectedMonthStats(e.target.value)}
             >
-              <MenuItem value={0} defaultChecked>
-                All
-              </MenuItem>
+              <MenuItem value={0}>All</MenuItem>
               <MenuItem value={1}>January</MenuItem>
               <MenuItem value={2}>February</MenuItem>
               <MenuItem value={3}>March</MenuItem>

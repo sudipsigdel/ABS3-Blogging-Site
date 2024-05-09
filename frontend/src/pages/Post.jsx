@@ -16,7 +16,7 @@ const Post = () => {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    if (!token || role !== "User") {
+    if (!token || role.toLowerCase() !== "user") {
       swal(
         "Not Authorized",
         "You are not authorized to post",
@@ -33,7 +33,7 @@ const Post = () => {
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
   const [BlogImage, setBlogImage] = useState("");
-  const [Category, setCategory] = useState("");
+  const [Category, setCategory] = useState(0);
 
   const handlePost = async (e) => {
     e.preventDefault();
@@ -114,7 +114,7 @@ const Post = () => {
             onChange={(e) => setCategory(e.target.value)}
             fullWidth
           >
-            <MenuItem disabled>Select a category</MenuItem>
+            <MenuItem value="0" disabled>Select a category</MenuItem>
             <MenuItem value="Technology">Technology</MenuItem>
             <MenuItem value="Health">Health</MenuItem>
             <MenuItem value="Science">Science</MenuItem>

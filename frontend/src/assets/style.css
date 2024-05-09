@@ -766,10 +766,6 @@
   margin: 1rem 0 0 0;
 }
 
-.home-container > .notification-content > p:nth-child(1) {
-  background-color: #dad4d4;
-}
-
 /* Pagination */
 .pagination {
   display: flex;
@@ -805,4 +801,24 @@
   background-color: #f2f2f2;
   color: #12372a;
   cursor: not-allowed;
+}
+
+.react {
+  cursor: pointer;
+}
+
+.edited-comment {
+  color: #12372a;
+  font-size: 0.8rem;
+  border-bottom: 2px solid #12372a;
+  padding: 1rem 0.5rem;
+}
+
+.edited-comment > p {
+  font-size: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.edited-comment > i {
+  padding: 0 0.5rem 0.5rem 0;
 }
