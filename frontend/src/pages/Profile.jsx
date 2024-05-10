@@ -42,21 +42,21 @@ const Profile = () => {
     setOpenEdit(false);
   };
 
-  const handleDelete = () => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, there is no way back!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Poof! Your account has been deleted!", {
-          icon: "success",
-        });
-      }
-    });
-  };
+  // const handleDelete = () => {
+  //   swal({
+  //     title: "Are you sure?",
+  //     text: "Once deleted, there is no way back!",
+  //     icon: "warning",
+  //     buttons: true,
+  //     dangerMode: true,
+  //   }).then((willDelete) => {
+  //     if (willDelete) {
+  //       swal("Poof! Your account has been deleted!", {
+  //         icon: "success",
+  //       });
+  //     }
+  //   });
+  // };
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

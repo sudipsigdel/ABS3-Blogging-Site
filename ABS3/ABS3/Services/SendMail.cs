@@ -11,7 +11,7 @@ namespace ABS3.Services
         //this method is used to send the email
         public bool Email(string email, int otp)
         {
-            string sendMail = "asb3blog@gmail.com";
+            string sendMail = "abs3blog.np@gmail.com";
             string password = "snsd yicz ohyn pgld";
             var data = otp.ToString();
             MailMessage message = new MailMessage();

@@ -1,12 +1,64 @@
 {
   "Files": [
     {
-      "Id": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.js",
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.js",
       "PackagePath": "staticwebassets\\js\\dist\\browser\\signalr.js"
     },
     {
-      "Id": "D:\\Application Development\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.min.js",
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\js\\dist\\browser\\signalr.min.js",
       "PackagePath": "staticwebassets\\js\\dist\\browser\\signalr.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\5c618bd9-342f-4c84-9a07-87e272eafa01.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\5c618bd9-342f-4c84-9a07-87e272eafa01.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\5e1b73ee-8c53-4ecc-907e-79817465f25e.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\5e1b73ee-8c53-4ecc-907e-79817465f25e.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\6fef56cf-8aeb-4923-88c0-b27665c4c663.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\6fef56cf-8aeb-4923-88c0-b27665c4c663.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\7e35065f-5118-4c9a-bfc6-bdd14436c46b.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\7e35065f-5118-4c9a-bfc6-bdd14436c46b.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\9584a23f-5cab-4039-968d-80dae3effd8d.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\9584a23f-5cab-4039-968d-80dae3effd8d.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\aa652875-ebae-48d5-9d4f-8abb4adaf949.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\aa652875-ebae-48d5-9d4f-8abb4adaf949.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\ae6164a6-a9d5-454b-9937-30159f790fd5.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\ae6164a6-a9d5-454b-9937-30159f790fd5.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\blogs\\d49c0cd1-c5b1-45aa-ba4c-99395f46f3b6.png",
+      "PackagePath": "staticwebassets\\uploads\\blogs\\d49c0cd1-c5b1-45aa-ba4c-99395f46f3b6.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\users\\306cc6e2-2f44-4886-8117-8e9fa4517b83.jpg",
+      "PackagePath": "staticwebassets\\uploads\\users\\306cc6e2-2f44-4886-8117-8e9fa4517b83.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\users\\58cf3498-4aa4-47d4-b931-43a32ae7ff59.jpg",
+      "PackagePath": "staticwebassets\\uploads\\users\\58cf3498-4aa4-47d4-b931-43a32ae7ff59.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\users\\73595fcb-7963-43e8-baac-ffb3e1340de8.jpg",
+      "PackagePath": "staticwebassets\\uploads\\users\\73595fcb-7963-43e8-baac-ffb3e1340de8.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\users\\bbe7637a-9f1a-4326-a08e-2af90ee5c770.png",
+      "PackagePath": "staticwebassets\\uploads\\users\\bbe7637a-9f1a-4326-a08e-2af90ee5c770.png"
+    },
+    {
+      "Id": "C:\\Users\\Acer\\OneDrive\\Desktop\\ABS3\\ABS3\\ABS3\\wwwroot\\uploads\\users\\f824dc8a-054a-4367-87be-c7886f951f83.jpg",
+      "PackagePath": "staticwebassets\\uploads\\users\\f824dc8a-054a-4367-87be-c7886f951f83.jpg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ABS3.Microsoft.AspNetCore.StaticWebAssets.props",

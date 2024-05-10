@@ -10,6 +10,8 @@ const Home = () => {
   const [blogList, setBlogList] = useState([]);
   const [sort, setSort] = useState("random");
 
+  const token = localStorage.getItem("token");
+
   const listBlogs = async () => {
     let blogApi = await fetch("https://localhost:7124/api/Blog/GetBlogs", {
       method: "GET",
@@ -104,11 +106,13 @@ const Home = () => {
     <>
       <Navbar />
 
-      <div className="post">
-        <a href="/post">
-          <img src={Post} alt="" width={30} />
-        </a>
-      </div>
+      {token ? (
+        <div className="post">
+          <a href="/post">
+            <img src={Post} alt="" width={30} />
+          </a>
+        </div>
+      ) : null}
 
       <div className="home-container">
         <div className="heading-top">
