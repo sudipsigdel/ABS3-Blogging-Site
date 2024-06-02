@@ -133,7 +133,7 @@ namespace ABS3.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
-        //this method us sued to change the password
+        //this method is used to change the password
         [Authorize]
         [HttpPut("UserProfilePassword")]
         public async Task<ActionResult> ChangePassword(string currentPassword, string newPassword)
@@ -196,7 +196,7 @@ namespace ABS3.Controllers
             }
             _context.Blogs.RemoveRange(blog);
             _context.Users.Remove(user);
-             _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return Ok("User deleted successfully");
 
 
